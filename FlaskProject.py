@@ -23,11 +23,14 @@ def main():
     return ""
 
 
+@app.route('/bot')
 def call_bot():
     hook = requests.get(URL + "setWebhook?url=%s" % APP_URL).content
     print(hook)
     return hook.status == '200'
 
+if call_bot():
+    print("all ok")
 
 if __name__ == '__main__':
     app.run()
