@@ -1,5 +1,5 @@
-import requests
-from flask import Flask, request, jsonify
+import requests, json
+from flask import Flask, request, jsonify, current_app
 
 app = Flask(__name__)
 
@@ -23,10 +23,10 @@ def main():
 
 @app.route('/bot')
 def call_bot():
-    hook = requests.get(URL + "setWebhook?url=%s" % APP_URL).content
-    print(jsonify(hook))
-    print(jsonify(hook).ok)
-    return True
+    req = requests.get(URL + "setWebhook?url=%s" % APP_URL)
+    print(req.status_code)
+    return req.status_code == 200
+
 
 if call_bot():
     print("all ok")
