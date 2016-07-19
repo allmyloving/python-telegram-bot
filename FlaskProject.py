@@ -18,8 +18,9 @@ def main():
     print("Main function called")
     print("Request type: " + request.method)
     print("Request url: ", request.url)
-    data = json.loads(request.data)
-    print(data)
+    update = json.loads(request.data)
+    print(update)
+    print(update['message'].get('text'))
     return "OK"
 
 
