@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 TOKEN = '260039213:AAHHKne9Sme8r-fROdHRBk577_o7XZblBcQ'
 URL = "https://api.telegram.org/bot%s/" % TOKEN
-APP_URL = "http://localhost:5000"
+APP_URL = "https://morning-fortress-78667.herokuapp.com/"
 
 
 @app.route('/hello')
@@ -13,14 +13,13 @@ def hello_world():
     return 'Hello World!'
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['POST'])
 def main():
     print("Main function called")
     print("Request type: " + request.method)
     print("Request url: ", request.url)
     data = json.loads(request.data)
-    print(
-        "New commit by: {}".format(data['commits'][0]['author']['name']))
+    print(data)
     return "OK"
 
 
