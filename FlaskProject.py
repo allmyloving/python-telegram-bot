@@ -20,6 +20,7 @@ def main():
     logging.debug("Main function called")
     logging.debug("Request type: ", request.method)
     logging.debug("Request url: ", request.url)
+    return ""
 
 
 def call_bot():
