@@ -17,19 +17,19 @@ def hello_world():
 
 @app.route('/', methods=['GET', 'POST'])
 def main():
-    logging.debug("Main function called")
-    logging.debug("Request type: ", request.method)
-    logging.debug("Request url: ", request.url)
+    print("Main function called")
+    print("Request type: " + request.method)
+    print("Request url: ", request.url)
     return ""
 
 
 def call_bot():
     hook = requests.get(URL + "setWebhook?url=%s" % APP_URL).content
-    logging.info(hook)
+    print(hook)
     return hook.status == '200'
 
 
 if __name__ == '__main__':
     app.run()
     if call_bot():
-        logging.info("All ok")
+        print("All ok")
