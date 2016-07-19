@@ -18,7 +18,10 @@ def main():
     print("Main function called")
     print("Request type: " + request.method)
     print("Request url: ", request.url)
-    return ""
+    data = json.loads(request.data)
+    print(
+        "New commit by: {}".format(data['commits'][0]['author']['name']))
+    return "OK"
 
 
 @app.route('/bot')
