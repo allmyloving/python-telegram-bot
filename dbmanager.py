@@ -3,7 +3,7 @@ from pymongo import MongoClient
 DB_URL = "mongodb://ds023325.mlab.com:23325"
 
 
-def main():
+def add():
     client = MongoClient(DB_URL)
     db = client.heroku_drc033gr
     result = db.rem.insert_one({

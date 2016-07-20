@@ -2,7 +2,7 @@ import requests
 import json
 import random
 from flask import Flask, request
-from dbmanager import main
+from dbmanager import add
 
 app = Flask(__name__)
 
@@ -60,7 +60,7 @@ def be_nice(message):
 
 
 def add_rem(message):
-    main()
+    add()
     return 'completed'
 
 
