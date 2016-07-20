@@ -1,5 +1,8 @@
-import requests, json
-from flask import Flask, request, jsonify, current_app
+import requests
+import json
+import random
+from flask import Flask, request
+from dbmanager import main
 
 app = Flask(__name__)
 
@@ -44,6 +47,16 @@ def help_comm(message):
     return "\n\t".join(result)
 
 
+def be_nice(message):
+    index = random.randint(0, len(NICE_MSG) - 1)
+    return NICE_MSG[index]
+
+
+def add_rem(message):
+    main()
+    return 'completed'
+
+
 def get_user_name(message):
     return message['from'].get('first_name')
 
@@ -59,7 +72,13 @@ if call_bot():
     print("all ok")
 
 COMMANDS = {"/start": start,
-            "/help": help_comm}
+            "/help": help_comm,
+            "/benice": be_nice,
+            "/addrem": add_rem}
+NICE_MSG = ["You look great today!",
+            "You're gonna be fine!",
+            "Love and peace",
+            "Keep calm and learn Java ~~~~"]
 
 if __name__ == '__main__':
     app.run()
