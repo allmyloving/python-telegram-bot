@@ -22,12 +22,14 @@ def main():
     response = COMMANDS.get(message.get('text'))(message)
 
     print(response)
-    send_response(response)
+    send_response(response, message['chat']['id'])
     return "OK"
 
 
-def send_response(response):
-    requests.post(URL + "sendMessage", data=response)
+def send_response(response, chat_id):
+    data = {'chat_id': chat_id,
+            'text': response}
+    requests.post(URL + "sendMessage", data)
 
 
 def start(message):
@@ -35,11 +37,11 @@ def start(message):
 
 
 def help_comm(message):
-    response = {'chat_id': message['chat']['id']}
+    # response = {'chat_id': message['chat']['id']}
     result = ["Hello %s! \r\nI can accept only these commands:\r\n" % get_user_name(message)]
     for cmd in COMMANDS:
         result.append(cmd)
-    response['text'] = "\n\t".join(result)
+    return "\n\t".join(result)
 
 
 def get_user_name(message):
