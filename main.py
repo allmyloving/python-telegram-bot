@@ -22,11 +22,18 @@ def main():
     print(update)
     print(update['message'].get('text'))
     message = update['message']
-    response = COMMANDS.get(message.get('text'))(message)
 
+    response = execute_comm(message.get('text'), message)
     print(response)
     send_response(response, message['chat']['id'])
     return "OK"
+
+
+def execute_comm(command, message):
+    comm = COMMANDS.get(message.get('text'))
+    if comm is None:
+        return "Error, command %s not found" % command
+    return comm(message)
 
 
 def send_response(response, chat_id):
