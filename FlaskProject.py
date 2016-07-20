@@ -15,13 +15,35 @@ def hello_world():
 
 @app.route('/', methods=['POST'])
 def main():
-    print("Main function called")
-    print("Request type: " + request.method)
-    print("Request url: ", request.url)
     update = json.loads(request.data)
     print(update)
     print(update['message'].get('text'))
+    message = update['message']
+    response = COMMANDS.get(message.get('text'))(message)
+
+    print(response)
+    send_response(response)
     return "OK"
+
+
+def send_response(response):
+    requests.post(URL + "sendMessage", data=response)
+
+
+def start(message):
+    return "Hello there %s!" % get_user_name(message)
+
+
+def help_comm(message):
+    response = {'chat_id': message['chat']['id']}
+    result = ["Hello %s! \r\nI can accept only these commands:\r\n" % get_user_name(message)]
+    for cmd in COMMANDS:
+        result.append(cmd)
+    response['text'] = "\n\t".join(result)
+
+
+def get_user_name(message):
+    return message['from'].get('first_name')
 
 
 @app.route('/bot')
@@ -33,6 +55,9 @@ def call_bot():
 
 if call_bot():
     print("all ok")
+
+COMMANDS = {"/start": start,
+            "/help": help_comm}
 
 if __name__ == '__main__':
     app.run()
