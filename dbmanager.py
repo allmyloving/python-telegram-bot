@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-DB_URL = "mongodb://admin:admin@ds023325.mlab.com:23325"
+DB_URL = "mongodb://admin:admin@ds023325.mlab.com:23325/heroku_drc033gr"
 
 
 def add():
