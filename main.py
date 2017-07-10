@@ -68,5 +68,4 @@ def call_bot():
     print(req.status_code)
     return req.status_code == 200
 
-call_bot()
 bot.polling()
