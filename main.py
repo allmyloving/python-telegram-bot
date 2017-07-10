@@ -10,20 +10,6 @@ URL = "https://api.telegram.org/bot%s/" % TOKEN
 APP_URL = "https://morning-fortress-78667.herokuapp.com/"
 
 
-def main():
-    update_id = last_update(get_updates_json(URL))['update_id']
-    while True:
-        if update_id == last_update(get_updates_json(URL))['update_id']:
-            print("sending message to update_id: " + update_id)
-            send_mess(get_chat_id(last_update(get_updates_json(URL))), 'test')
-            update_id += 1
-            sleep(1)
-
-
-if __name__ == '__main__':
-    main()
-
-
 def get_updates_json(request):
     params = {'timeout': 100, 'offset': None}
     response = requests.get(request + 'getUpdates', data=params)
@@ -56,3 +42,17 @@ NICE_MSG = ["You look great today!",
             "You're gonna be fine!",
             "Love and peace",
             "Keep calm and learn Java ~~~~"]
+
+
+def main():
+    update_id = last_update(get_updates_json(URL))['update_id']
+    while True:
+        if update_id == last_update(get_updates_json(URL))['update_id']:
+            print("sending message to update_id: " + update_id)
+            send_mess(get_chat_id(last_update(get_updates_json(URL))), 'test')
+            update_id += 1
+            sleep(1)
+
+
+if __name__ == '__main__':
+    main()
