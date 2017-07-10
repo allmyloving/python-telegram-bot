@@ -14,6 +14,7 @@ def main():
     update_id = last_update(get_updates_json(URL))['update_id']
     while True:
         if update_id == last_update(get_updates_json(URL))['update_id']:
+            print("sending message to update_id: " + update_id)
             send_mess(get_chat_id(last_update(get_updates_json(URL))), 'test')
             update_id += 1
             sleep(1)
@@ -44,6 +45,7 @@ def send_mess(chat, text):
     params = {'chat_id': chat, 'text': text}
     response = requests.post(URL + 'sendMessage', data=params)
     return response
+
 
 #
 # COMMANDS = {"/start": start,
