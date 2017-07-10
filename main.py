@@ -1,73 +1,56 @@
-import random
+from time import sleep
 
 import requests
-import telebot
 from flask import Flask
-
-import dbmanager
 
 app = Flask(__name__)
 
 TOKEN = '260039213:AAHHKne9Sme8r-fROdHRBk577_o7XZblBcQ'
 URL = "https://api.telegram.org/bot%s/" % TOKEN
-# APP_URL = "https://morning-fortress-78667.herokuapp.com/"
+APP_URL = "https://morning-fortress-78667.herokuapp.com/"
 
-bot = telebot.TeleBot(TOKEN)
 
-COMMANDS = ["/start", "/help", "/benice", "/addrem"]
+def main():
+    update_id = last_update(get_updates_json(URL))['update_id']
+    while True:
+        if update_id == last_update(get_updates_json(URL))['update_id']:
+            send_mess(get_chat_id(last_update(get_updates_json(URL))), 'test')
+            update_id += 1
+            sleep(1)
+
+
+if __name__ == '__main__':
+    main()
+
+
+def get_updates_json(request):
+    params = {'timeout': 100, 'offset': None}
+    response = requests.get(request + 'getUpdates', data=params)
+    return response.json()
+
+
+def last_update(data):
+    results = data['result']
+    total_updates = len(results) - 1
+    return results[total_updates]
+
+
+def get_chat_id(update):
+    chat_id = update['message']['chat']['id']
+    return chat_id
+
+
+def send_mess(chat, text):
+    params = {'chat_id': chat, 'text': text}
+    response = requests.post(URL + 'sendMessage', data=params)
+    return response
+
+#
+# COMMANDS = {"/start": start,
+#             "/help": help_comm,
+#             "/benice": be_nice,
+#             "/addrem": add_rem}
 NICE_MSG = ["You look great today!",
             "You're gonna be fine!",
             "Love and peace",
             "Keep calm and learn Java ~~~~"]
-
-
-@app.route('/hello')
-def hello_world():
-    return 'Hello World!'
-
-
-def send_response(response, chat_id):
-    data = {'chat_id': chat_id,
-            'text': response}
-    requests.post(URL + "sendMessage", data)
-
-
-@bot.message_handler(commands=['start'])
-def start(message):
-    bot.reply_to(message, "Hello there %s!" % get_user_name(message))
-
-
-@bot.message_handler(commands=['help'])
-def help_comm(message):
-    # response = {'chat_id': message['chat']['id']}
-    result = ["Hello %s! \r\nI can accept only these commands:\r\n" % get_user_name(message)]
-    for cmd in COMMANDS:
-        result.append(cmd)
-    bot.reply_to(message, "\n\t".join(result))
-
-
-@bot.message_handler(commands=['be_nice'])
-def be_nice(message):
-    index = random.randint(0, len(NICE_MSG) - 1)
-    bot.reply_to(message, NICE_MSG[index])
-
-
-@bot.message_handler(commands=['addrem'])
-def add_rem(message):
-    dbmanager.add(message)
-    bot.reply_to(message, 'completed')
-
-
-def get_user_name(message):
-    return message['from'].get('first_name')
-
-
-@app.route('/bot')
-def call_bot():
-    req = requests.post(URL + "setWebhook?url=%s" % '')
-    print(req.status_code)
-    return req.status_code == 200
-
-
-bot.polling()
-# app.run()
