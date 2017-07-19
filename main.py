@@ -69,4 +69,4 @@ def call_bot():
     return req.status_code == 200
 
 call_bot()
-bot.polling()
+bot.polling(none_stop=True)
