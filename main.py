@@ -26,3 +26,7 @@ def lololo():
         chat_id = update["message"]["chat"]["id"]
         bot.send_message(chat_id, "you said '{}'".format(text))
     return "ok"
+
+
+if __name__ == '__main__':
+    app.run()
