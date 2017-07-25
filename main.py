@@ -1,10 +1,5 @@
-import random
-
-import requests
 import telebot
 from flask import Flask, request
-
-import dbmanager
 
 app = Flask(__name__)
 
@@ -21,6 +16,7 @@ NICE_MSG = ["You look great today!",
             "You're gonna be fine!",
             "Love and peace",
             "Keep calm and learn Java ~~~~"]
+
 
 @app.route('/{}'.format(TOKEN), methods=["POST"])
 def lololo():
